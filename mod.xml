@@ -1,0 +1,5 @@
+<Mod
+  name="Negative Streak"
+  description="Track consecutive deaths as a negative streak number"
+  request_no_api_restrictions="1"
+/>

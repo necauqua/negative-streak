@@ -1,0 +1,14 @@
+{
+  "name": "negative-streak",
+  "description": "dunk is bald",
+  "noita.name": "Negative Streak",
+  "noita.unsafe": true,
+  "noita.compat": 12,
+  "author": "Anton Bulakh <him@necauq.ua> (https://necauq.ua/)",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@noita-ts/base": "^0.1.6",
+    "@noita-ts/ffi": "^0.1.2"
+  }
+}

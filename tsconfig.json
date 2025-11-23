@@ -1,0 +1,3 @@
+{
+  "extends": "@noita-ts/base/mod-tsconfig.json"
+}

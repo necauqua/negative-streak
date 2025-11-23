@@ -5,6 +5,7 @@
   "noita.unsafe": true,
   "noita.compat": 12,
   "author": "Anton Bulakh <him@necauq.ua> (https://necauq.ua/)",
+  "version": "2.0.0",
   "private": true,
   "license": "MIT",
   "dependencies": {

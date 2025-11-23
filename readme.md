@@ -21,7 +21,7 @@ The mod patches the engine assembly code, which cannot be done without it
 Steam Workshop and you have to install it manually from here.
 
 Download the `negative-streak.zip` zip file from the
-[releases](https://github.com/negative-streak/releases) page or from the
+[releases](https://github.com/necauqua/negative-streak/releases) page or from the
 [mod workshop](https://modworkshop.net/mod/49379) and unpack it into your
 `mods` folder.
 

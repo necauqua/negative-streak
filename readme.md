@@ -54,9 +54,5 @@ have noita-ts create and launch an isolated Noita instance with a dev build
 (includes debug features) of the mod installed, it's very convenient, and also
 turbo-untested on Windows.
 
-Either download this repo as a zip file and unpack it into a `negative-streak`
-folder in your Noita mods folder, or download it from
-https://modworkshop.net/mod/49379 and do the same thing 🤷
-
 ### License
 This mod is licensed under the MIT license. See the LICENSE file for details.

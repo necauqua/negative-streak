@@ -5,11 +5,11 @@
   "noita.unsafe": true,
   "noita.compat": 12,
   "author": "Anton Bulakh <him@necauq.ua> (https://necauq.ua/)",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@noita-ts/base": "^0.1.6",
-    "@noita-ts/ffi": "^0.1.2"
+    "@noita-ts/base": "^0.2.1",
+    "@noita-ts/ffi": "^0.1.3"
   }
 }

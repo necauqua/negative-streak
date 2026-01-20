@@ -38,6 +38,29 @@ if (ffi.cast("uint8_t*", call + 5)[0] !== 0x8d) {
     0xc3, // ret
   ]);
 
+  // find and erase the GLOBAL_STATS.highest assignment to its initial value in the `if (mods are present)` block
+  const killerCauseStr = ffi.locateStringPush(
+    "$menugameover_causeofdeath_killer_cause",
+  );
+
+  // ew
+  const highestAddr =
+    tonumber(ffi.cast("uint32_t", ffi.cast("void*", GLOBAL_STATS)))! +
+    ffi.offsetof("GlobalStats", "highest");
+
+  const highestLoc = ffi.scan(highestAddr, { at: killerCauseStr, limit: 4096 });
+  ffi.patch(
+    [0xe8],
+    [
+      0x83, // \
+      0xc4, // | add esp, 4 (to clean up the stack from the pushed arg)
+      0x04, // /
+      0x66, // \
+      0x90, // | nop
+    ],
+    { at: highestLoc + 4 },
+  );
+
   // remove the check for prev_best.streak being >= 1
   // when choosing if to show the RECORD! thing
   ffi.patch([0x7e, 0x0c], [0x66, 0x90], { at: push, back: true });

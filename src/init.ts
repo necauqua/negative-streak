@@ -140,7 +140,9 @@ noita.on("PlayerDied", () => {
   }
 
   // we only do this for Noita Utility Box live stats tool to show it in the overlay
-  GLOBAL_STATS.session.streak = -streak;
+  if (ModSettingGet(MOD_ID + ".set-negative")) {
+    GLOBAL_STATS.session.streak = -streak;
+  }
 
   // and render our negative streak
   sessionRender[0] = -streak;

@@ -9,7 +9,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@noita-ts/base": "^0.2.1",
+    "@noita-ts/base": "^0.6.0",
     "@noita-ts/ffi": "^0.1.3"
   }
 }

@@ -1,5 +1,5 @@
 import { DEV, MOD_ID } from "$mod";
-import noita from "@noita-ts/base";
+import mod from "@noita-ts/base";
 import ffi from "@noita-ts/ffi";
 import GLOBAL_STATS from "@noita-ts/ffi/global_stats";
 import debug from "./debug";
@@ -92,8 +92,15 @@ const forceRecord = () => ffi.patchRaw(streakRecordJL, [0x66, 0x90]);
 // undo the above, duh
 const restoreRecord = () => ffi.patchRaw(streakRecordJL, [0x7c, 0x04]);
 
-noita.on("PlayerSpawned", () => {
-  if (ModSettingGet(MOD_ID + ".streak") !== undefined) {
+declare global {
+  interface SettingsShape {
+    streak?: number;
+    worst?: number;
+  }
+}
+
+mod.on("PlayerSpawned", () => {
+  if (mod.settings.streak !== undefined) {
     return;
   }
 
@@ -103,19 +110,19 @@ noita.on("PlayerSpawned", () => {
   const altarWins = GLOBAL_STATS.KEY_VALUE_STATS.get("progress_ending1") ?? 0;
 
   if (endroomWins + altarWins === 0) {
-    ModSettingSet(MOD_ID + ".streak", GLOBAL_STATS.global.death_count);
-    ModSettingSet(MOD_ID + ".worst", GLOBAL_STATS.global.death_count);
+    mod.settings.streak = GLOBAL_STATS.global.death_count;
+    mod.settings.worst = GLOBAL_STATS.global.death_count;
   }
 });
 
-noita.on("PlayerDied", () => {
+mod.on("PlayerDied", () => {
   // if you won
   if (
     GameHasFlagRun("ending_game_completed") ||
     MagicNumbersGetValue("DEBUG_ALWAYS_COMPLETE_THE_GAME") != "0"
   ) {
     // the negative streak is lost 😂
-    ModSettingSet(MOD_ID + ".streak", 0);
+    mod.settings.streak = 0;
 
     // let the game render its streak
     sessionRender[0] = GLOBAL_STATS.session.streak;
@@ -124,15 +131,15 @@ noita.on("PlayerDied", () => {
     return;
   }
 
-  let streak = (ModSettingGet(MOD_ID + ".streak") || 0) as number;
+  let streak = (mod.settings.streak || 0) as number;
   streak = streak + 1;
-  ModSettingSet(MOD_ID + ".streak", streak);
+  mod.settings.streak = streak;
 
-  let worst = (ModSettingGet(MOD_ID + ".worst") || 0) as number;
+  let worst = (mod.settings.worst || 0) as number;
   if (streak >= worst) {
     // this follows game behaviour with streaks, we show RECORD! of number is >= previous best,
     // and we update the saved value, but show the previous one which is one lower than the new pb
-    ModSettingSet(MOD_ID + ".worst", streak);
+    mod.settings.worst = streak;
     forceRecord();
   } else {
     // RECORD! is never shown when you just died, so we keep the default behaviour here
@@ -140,7 +147,7 @@ noita.on("PlayerDied", () => {
   }
 
   // we only do this for Noita Utility Box live stats tool to show it in the overlay
-  if (ModSettingGet(MOD_ID + ".set-negative")) {
+  if (mod.settings["set-negative"]) {
     GLOBAL_STATS.session.streak = -streak;
   }
 

@@ -1,13 +1,12 @@
-import { MOD_ID } from "$mod";
-import noita from "@noita-ts/base";
+import mod from "@noita-ts/base";
 import { Ptr } from "@noita-ts/ffi";
 import GLOBAL_STATS from "@noita-ts/ffi/global_stats";
 
 export default (sessionRender: Ptr<number>, prevBestRender: Ptr<number>) => {
   // just init our memory so render doesn't show garbage
-  noita.on("PlayerSpawned", () => {
-    let streak = (ModSettingGet(MOD_ID + ".streak") || 0) as number;
-    const worst = (ModSettingGet(MOD_ID + ".worst") || 0) as number;
+  mod.on("PlayerSpawned", () => {
+    let streak = (mod.settings.streak ?? 0) as number;
+    const worst = (mod.settings.worst ?? 0) as number;
     sessionRender[0] = -streak;
     prevBestRender[0] = -worst;
   });
@@ -15,11 +14,7 @@ export default (sessionRender: Ptr<number>, prevBestRender: Ptr<number>) => {
   let debugGui: GuiID | undefined;
 
   const renderDebug = (shade: number) => {
-    if (!debugGui) {
-      debugGui = GuiCreate();
-    }
-
-    GuiStartFrame(debugGui);
+    GuiStartFrame((debugGui ??= GuiCreate()));
 
     const text = string.format(
       "game: %d/%d | render: %d/%d | wins/deaths: (%d+%d)/%d",
@@ -38,12 +33,12 @@ export default (sessionRender: Ptr<number>, prevBestRender: Ptr<number>) => {
     const [left, right] = GuiButton(debugGui, 1, 65, 8, "[reset]");
 
     if (left) {
-      ModSettingSet(MOD_ID + ".streak", 0);
+      mod.settings.streak = 0;
       sessionRender[0] = 0;
     }
 
     if (right) {
-      ModSettingSet(MOD_ID + ".worst", 0);
+      mod.settings.worst = 0;
       prevBestRender[0] = 0;
     }
 
@@ -88,6 +83,6 @@ export default (sessionRender: Ptr<number>, prevBestRender: Ptr<number>) => {
     }
   };
 
-  noita.on("WorldPreUpdate", () => renderDebug(1));
-  noita.on("PausePreUpdate", () => renderDebug(0.5));
+  mod.on("WorldPreUpdate", () => renderDebug(1));
+  mod.on("PausePreUpdate", () => renderDebug(0.5));
 };
